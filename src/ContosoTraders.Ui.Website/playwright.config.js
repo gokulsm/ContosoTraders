@@ -43,6 +43,16 @@ const config = {
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'on-first-retry',
+
+    locale: 'de-DE',
+    timezoneId: 'Europe/Berlin',
+
+    geolocation: { longitude: 48.858455, latitude: 2.294474 },
+    permissions: ['geolocation'],
+
+    colorScheme: 'dark',
+
+    viewport: { width: 600, height: 900 },
   },
 
   /* Configure projects for major browsers */

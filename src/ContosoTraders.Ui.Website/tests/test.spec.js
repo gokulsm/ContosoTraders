@@ -6,6 +6,12 @@ test.beforeEach(async({page})=>{
   await page.goto('/');
 })
 
+test('shows page in dark mode', async ({ page }) => {
+  await page.locator('input.MuiSwitch-input').check()
+  await expect(page.locator('.App')).toHaveAttribute('class', 'App dark')
+})
+
+//test microsoft login functionality
 test('Login', async ({ page }) => {
   await page.goto('/');
   const [page1] = await Promise.all([
@@ -20,24 +26,24 @@ test('Login', async ({ page }) => {
   await page1.getByRole('button', { name: 'Sign in' }).click();
   await page1.getByRole('button', { name: 'Approve a request on my Microsoft Authenticator app' }).click();
   await Promise.all([
-    // Waits for the next response matching some conditions
     page.waitForResponse(response => response.url() === `${process.env.REACT_APP_APIUrl}/products/landing` && response.status() === 200),
   ]);
 });
 test.describe('Header', () => {
+  //header seaach bar search with text
   test('should be able to search by text', async ({ page }) => {
     await page.getByPlaceholder('Search by product name or search by image').click();
     await page.getByPlaceholder('Search by product name or search by image').fill('laptops');
     await page.getByPlaceholder('Search by product name or search by image').press('Enter');
     await expect(page).toHaveURL('/suggested-products-list');
   });
-
+  //selecting right category
   test('should be able to select category', async ({ page }) => {
     await page.getByRole('button', { name: 'All Categories' }).click();
     await page.getByRole('menuitem', { name: 'Laptops' }).click();
     await expect(page).toHaveURL('/list/laptops');
   });
-
+  //selecting header menu
   test('should be able to select header menu', async ({ page }) => {
     await page.getByRole('navigation').getByRole('link', { name: 'All Products' }).click();
     await expect(page).toHaveURL('/list/all-products');
@@ -46,7 +52,7 @@ test.describe('Header', () => {
 });
 
 test.describe('Home page', () => {
-  //Corousel
+  //Click buttons inside Corousel
   test('should be able to select buy now in corosel', async ({ page }) => {
     await page.getByRole('button', { name: 'Buy Now' }).click();
     await expect(page).toHaveURL('/product/detail/'+_productid);
@@ -61,6 +67,7 @@ test.describe('Home page', () => {
     await page.locator('section').getByRole('button', { name: 'Start Shopping' }).click();
     await expect(page).toHaveURL('/list/controllers');
   });
+  //
   test('should be able to explore other products', async ({ page }) => {
     await page.getByRole('button', { name: 'Explore Other Products' }).click();
     await expect(page).toHaveURL('/list/laptops');
@@ -121,3 +128,23 @@ test.describe('APIs', () => {
     expect(response.ok()).toBeTruthy();
   });
 });
+
+// Mock API
+test.describe('MockAPIs', () => {
+  test('load mock API', async ({ page }) => {
+    console.log('fffffffff')
+    await page.route('https://contoso-traders-productsprod.azurewebsites.net/v1/products/', async route => {
+      // const json = {
+      //   message: { 'test_breed': [] }
+      // };
+      await route.fulfill({ 
+        status : 200,
+        contentType : "application/json",
+        body : {
+          'type':'laptops',
+          'brand': 1
+        }
+      });
+    });
+  });
+})
