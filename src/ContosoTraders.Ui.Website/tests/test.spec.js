@@ -130,21 +130,21 @@ test.describe('APIs', () => {
 });
 
 // Mock API
-test.describe('MockAPIs', () => {
-  test('load mock API', async ({ page }) => {
-    console.log('fffffffff')
-    await page.route('https://contoso-traders-productsprod.azurewebsites.net/v1/products/', async route => {
-      // const json = {
-      //   message: { 'test_breed': [] }
-      // };
-      await route.fulfill({ 
-        status : 200,
-        contentType : "application/json",
-        body : {
-          'type':'laptops',
-          'brand': 1
-        }
-      });
-    });
-  });
-})
+// test.describe('MockAPIs', () => {
+//   test('load mock API', async ({ page }) => {
+//     console.log('fffffffff')
+//     await page.route('https://contoso-traders-productsprod.azurewebsites.net/v1/products/', async route => {
+//       // const json = {
+//       //   message: { 'test_breed': [] }
+//       // };
+//       await route.fulfill({ 
+//         status : 200,
+//         contentType : "application/json",
+//         body : {
+//           'type':'laptops',
+//           'brand': 1
+//         }
+//       });
+//     });
+//   });
+// })
